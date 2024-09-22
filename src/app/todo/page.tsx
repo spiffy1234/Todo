@@ -6,11 +6,15 @@ import { useState, useEffect } from "react";
 type TodoType = {
   _id: string;
   task: string;
+  isCompleted: boolean;
+  createdAt: string;
 };
 export default function Todo() {
   const [todo, setTodo] = useState<TodoType>({
     _id: "",
     task: "",
+    isCompleted: false,
+    createdAt: "",
   });
 
   const [todos, setTodos] = useState<Array<TodoType>>([]);
@@ -38,7 +42,7 @@ export default function Todo() {
       const res = await axios.post("/api/todo", todo);
 
       if (res.data.success) {
-        setTodo({ task: "", _id: "" });
+        setTodo({ task: "", _id: "", isCompleted: false, createdAt: "" });
         await fetchTodos();
         toast.success("Task added successfully");
       }
@@ -58,7 +62,7 @@ export default function Todo() {
     try {
       const res = await axios.put("/api/todo", todo);
       if (res.data.success) {
-        setTodo({ _id: "", task: "" });
+        setTodo({ _id: "", task: "", isCompleted: false, createdAt: "" });
         setEditing(false);
         await fetchTodos();
         toast.success(res.data.msg);
@@ -82,10 +86,23 @@ export default function Todo() {
     }
   }
 
+  async function completeTask(id: string) {
+    try {
+      const res = await axios.patch(`/api/todo/${id}`);
+      console.log(res.data);
+      if (res.data.success) {
+        toast.success(res.data.msg);
+        await fetchTodos();
+      }
+    } catch (error: any) {
+      toast.error("Not completed task");
+    }
+  }
+
   return (
     <>
       {!editing ? (
-        <form onSubmit={createTodo} className="flex flex-col ">
+        <form onSubmit={createTodo} className="flex flex-col gap-2 p-4  ">
           <input
             type="text"
             placeholder="Enter a Task"
@@ -94,7 +111,7 @@ export default function Todo() {
             onChange={(e: any) => {
               setTodo({ ...todo, task: e.target.value });
             }}
-            className="p-2 border "
+            className="p-2 border  "
           />
           <input
             type="submit"
@@ -117,12 +134,12 @@ export default function Todo() {
           <input
             type="submit"
             value="Update"
-            className="bg-green-500 text-white rounded cursor-pointer"
+            className="p-2 bg-green-500 text-white rounded cursor-pointer m-2"
           />
         </form>
       )}
       <Toaster />
-      <table className="border">
+      <table className="border m-8 h-1/2 w-full">
         <thead>
           <tr>
             <th className=" p-2 border bg-gray-100">Task</th>
@@ -130,13 +147,31 @@ export default function Todo() {
           </tr>
         </thead>
         <tbody>
-          {todos.map(({ task, _id }) => (
-            <tr key={_id}>
-              <td className=" p-2 border">{task}</td>
-              <td className=" p-2 border">
-                <button onClick={() => editTodo({ _id, task })}>Edit</button>
+          {todos.map((todo) => (
+            <tr key={todo._id}>
+              <td className=" p-2 border">{todo.task}</td>
+              <td>{todo.createdAt}</td>
+              <td className=" p-2 border ">
+                <button
+                  onClick={() => completeTask(todo._id)}
+                  disabled={todo.isCompleted || false}
+                  className="p-2 bg-pink-400"
+                >
+                  {todo.isCompleted ? "Completed" : "Incompleted "}
+                </button>
+                <button
+                  className="bg-green-400 p-3 m-4 border"
+                  onClick={() => editTodo(todo)}
+                >
+                  Edit
+                </button>
 
-                <button onClick={() => deleteTodo(_id)}>Delete</button>
+                <button
+                  className="bg-green-400 p-3 border"
+                  onClick={() => deleteTodo(todo._id)}
+                >
+                  Delete
+                </button>
               </td>
             </tr>
           ))}

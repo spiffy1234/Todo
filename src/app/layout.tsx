@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import styles from "./layout.module.css";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,20 +17,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ul className={styles.layoutpage}>
-          <li>
+        <ul className="flex w-screen p-7 bg-yellow-300  ">
+          <li className="text-center flex-1 text-xl">
             <a href="/login">Login</a>
           </li>
-          <li>
+          <li className="text-center flex-1 text-xl">
             <a href="/signup">Signup</a>
           </li>
-          <li>
+          <li className="text-center flex-1 text-xl">
             <a href="/todo">Todo</a>
           </li>
-          <select>
-            <option value="select">Select</option>
-            <option value="logout">Logout</option>
-          </select>
         </ul>
         {children}
       </body>

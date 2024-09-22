@@ -28,9 +28,12 @@ export default function Login() {
   }
 
   return (
-    <div>
-      <form onSubmit={loginHandler}>
-        <h2>Login here</h2>
+    <div
+      className="flex  justify-center flex items-center
+     bg-blue-300  h-screen"
+    >
+      <form onSubmit={loginHandler} className="flex flex-col gap-4 ">
+        <h2 className="text-center text-6xl m-10  ">Login </h2>
         <input
           type="email"
           name="email"
@@ -39,6 +42,7 @@ export default function Login() {
           onChange={(e: any) =>
             setLoginInfo({ ...loginInfo, email: e.target.value })
           }
+          className="h-8 p-2  w-96 rounded cursor pointer h-2xl"
         />
         <input
           type="password"
@@ -48,8 +52,13 @@ export default function Login() {
           onChange={(e: any) => {
             setLoginInfo({ ...loginInfo, password: e.target.value });
           }}
+          className="h-8 p-2 w-96 rounded cursor pointer h-8"
         />
-        <input type="submit" value="Login" />
+        <input
+          type="submit"
+          value="Login"
+          className="text-centre rounded cursor pointer w-24 p-2 bg-green-200 text-xl"
+        />
       </form>
       <Toaster />
     </div>

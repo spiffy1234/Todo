@@ -22,7 +22,7 @@ export default function Signup() {
   async function signupHandler(e: any) {
     e.preventDefault();
     try {
-      let res = await axios.post("/api/login", user);
+      let res = await axios.post("/api/signup", user);
       if (res.data.success) {
         toast.success("Signup Successfully");
         router.push("/login");
@@ -34,14 +34,16 @@ export default function Signup() {
   }
 
   return (
-    <div>
-      <form onSubmit={signupHandler}>
+    <div className="flex bg-orange-300 h-screen ">
+      <form className="flex flex-col " onSubmit={signupHandler}>
+        <h2 className="text-centre text-4xl m-4 ">Signup</h2>
         <input
           type="text"
           name="name"
           value={user.name}
           placeholder="Name"
           onChange={handleChange}
+          className="h-8 p-2 m-4 w-96 rounded cursor pointer h-2xl"
         />
         <input
           type="email"
@@ -49,6 +51,7 @@ export default function Signup() {
           value={user.email}
           placeholder="Email"
           onChange={handleChange}
+          className="h-8 p-2 m-4 w-96 rounded cursor pointer h-2xl"
         />
         <input
           type="password"
@@ -56,6 +59,7 @@ export default function Signup() {
           value={user.password}
           placeholder="Password"
           onChange={handleChange}
+          className="h-8 p-2 m-4  w-96 rounded cursor pointer h-2xl"
         />
         <input
           type="password"
@@ -63,6 +67,7 @@ export default function Signup() {
           value={user.confirmpassword}
           placeholder="Confirm Password"
           onChange={handleChange}
+          className="h-8 p-2 m-4  w-96 rounded cursor pointer h-2xl"
         />
         <input
           type="text"
@@ -70,8 +75,13 @@ export default function Signup() {
           value={user.mobile}
           placeholder="Mobile"
           onChange={handleChange}
+          className="h-8 p-2 m-4  w-96 rounded cursor pointer h-2xl"
         />
-        <input type="submit" value="Signup" />
+        <input
+          type="submit"
+          value="Signup"
+          className="text-centre rounded cursor pointer w-24 m-6 p-2 bg-green-200 text-xl"
+        />
       </form>
       <Toaster />
     </div>
